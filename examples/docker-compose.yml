@@ -1,0 +1,15 @@
+services:
+  ssh-honeypot:
+    image: bilyboy785/honeypot-ssh:latest
+    container_name: ssh-honeypot
+    restart: unless-stopped
+    ports:
+      - "22:22"
+    volumes:
+      - ./data/log:/data/log
+      - ./data/hostkey:/data/hostkey
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

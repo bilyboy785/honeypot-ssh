@@ -4,6 +4,14 @@ Honeypot SSH minimaliste. Le container ouvre un vrai handshake SSH (banner + éc
 
 Aucune session shell n'est jamais ouverte : la connexion s'arrête à l'étape d'authentification.
 
+## CI/CD
+
+`.github/workflows/ci.yml` : sur chaque PR/push, lint Dockerfile (hadolint) + vérif syntaxe/import Python + build. Sur push vers `main` ou tag `v*`, build et push l'image vers Docker Hub (`bilyboy785/honeypot-ssh`).
+
+Secrets requis dans le repo GitHub (Settings → Secrets and variables → Actions) :
+- `DOCKER_HUB_USERNAME` — username Docker Hub
+- `DOCKER_HUB_TOKEN` — access token Docker Hub (Account Settings → Security → New Access Token)
+
 ## Architecture
 
 - `honeypot.py` — serveur SSH factice (thread par connexion, clé hôte RSA persistée)
@@ -12,11 +20,20 @@ Aucune session shell n'est jamais ouverte : la connexion s'arrête à l'étape d
 - `examples/filter.d/sshd-honeypot.conf` — filtre fail2ban
 - `examples/jail.d/sshd-honeypot.local` — jail fail2ban d'exemple
 - `examples/sample.log` — extrait de log pour tester le filtre
+- `examples/docker-compose.yml` — variante utilisant l'image publiée sur Docker Hub (pas de build local)
 
 ## Démarrage
 
+Build local :
+
 ```bash
 docker compose up -d --build
+```
+
+Ou via l'image publiée sur Docker Hub (voir `examples/docker-compose.yml`) :
+
+```bash
+docker compose -f examples/docker-compose.yml up -d
 ```
 
 Le port 22 de l'hôte est redirigé vers le container. Si un vrai sshd tourne sur cette même machine, changez le port hôte dans `docker-compose.yml` (ex. `"2222:22"`) et redirigez le trafic voulu via iptables/nftables plutôt que d'exposer 22 en direct.
