@@ -1,6 +1,6 @@
-FROM python:3.12-alpine
+FROM python:3.13-alpine3.24
 
-RUN pip install --no-cache-dir paramiko==3.4.0
+RUN pip install --no-cache-dir paramiko==5.0.0
 
 WORKDIR /app
 COPY honeypot.py /app/honeypot.py

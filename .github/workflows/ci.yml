@@ -18,10 +18,10 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Install dependencies
-        run: pip install paramiko==3.4.0
+        run: pip install paramiko==5.0.0
 
       - name: Syntax check
         run: python -m py_compile honeypot.py
