@@ -8,7 +8,7 @@ on:
     branches: [main]
 
 env:
-  IMAGE_NAME: bilyboy785/honeypot-ssh
+  IMAGE_NAME: martinbouillaud/honeypot-ssh
 
 jobs:
   test:

@@ -6,7 +6,7 @@ Aucune session shell n'est jamais ouverte : la connexion s'arrête à l'étape d
 
 ## CI/CD
 
-`.github/workflows/ci.yml` : sur chaque PR/push, lint Dockerfile (hadolint) + vérif syntaxe/import Python + build. Sur push vers `main` ou tag `v*`, build et push l'image vers Docker Hub (`bilyboy785/honeypot-ssh`).
+`.github/workflows/ci.yml` : sur chaque PR/push, lint Dockerfile (hadolint) + vérif syntaxe/import Python + build. Sur push vers `main` ou tag `v*`, build et push l'image vers Docker Hub (`martinbouillaud/honeypot-ssh`).
 
 Secrets requis dans le repo GitHub (Settings → Secrets and variables → Actions) :
 - `DOCKER_HUB_USERNAME` — username Docker Hub

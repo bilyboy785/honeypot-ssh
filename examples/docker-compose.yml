@@ -1,6 +1,6 @@
 services:
   ssh-honeypot:
-    image: bilyboy785/honeypot-ssh:latest
+    image: martinbouillaud/honeypot-ssh:latest
     container_name: ssh-honeypot
     restart: unless-stopped
     ports:
