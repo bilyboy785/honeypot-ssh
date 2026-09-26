@@ -9,6 +9,7 @@ on:
 
 env:
   IMAGE_NAME: martinbouillaud/honeypot-ssh
+  GHCR_IMAGE_NAME: ghcr.io/${{ github.repository }}
 
 jobs:
   test:
@@ -44,6 +45,9 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v4
 
@@ -56,11 +60,20 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.IMAGE_NAME }}
+          images: |
+            ${{ env.IMAGE_NAME }}
+            ${{ env.GHCR_IMAGE_NAME }}
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=sha,format=short
