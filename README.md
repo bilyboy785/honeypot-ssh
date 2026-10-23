@@ -4,18 +4,21 @@ Honeypot SSH minimaliste. Le container ouvre un vrai handshake SSH (banner + éc
 
 Aucune session shell n'est jamais ouverte : la connexion s'arrête à l'étape d'authentification.
 
-## CI/CD
+## Tests et publication (local, sans CI)
 
-`.github/workflows/ci.yml` : sur chaque PR/push, lint Dockerfile (hadolint) + vérif syntaxe/import Python + build. Sur push vers `main` ou tag `v*`, build et push l'image vers Docker Hub (`martinbouillaud/honeypot-ssh`).
+Pas de CI GitHub. Tout se fait en local avec Docker :
 
-Secrets requis dans le repo GitHub (Settings → Secrets and variables → Actions) :
-- `DOCKER_HUB_USERNAME` — username Docker Hub
-- `DOCKER_HUB_TOKEN` — access token Docker Hub (Account Settings → Security → New Access Token)
+```bash
+scripts/test.sh     # hadolint + build amd64 + syntaxe/import Python
+scripts/release.sh  # build amd64 + push registry.bldwebagency.fr/docker-honeypot-ssh:latest (+ tag de version si HEAD est taggé vX.Y.Z)
+```
+
+Nécessite `docker login registry.bldwebagency.fr`.
 
 ## Architecture
 
 - `honeypot.py` — serveur SSH factice (thread par connexion, clé hôte RSA persistée)
-- `Dockerfile` — image `python:3.12-alpine` + paramiko
+- `Dockerfile` — image `python:3.13-alpine` + paramiko
 - `docker-compose.yml` — expose le port 22, monte les volumes de logs et de clé hôte
 - `examples/filter.d/sshd-honeypot.conf` — filtre fail2ban
 - `examples/jail.d/sshd-honeypot.local` — jail fail2ban d'exemple
