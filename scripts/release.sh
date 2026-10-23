@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build amd64 et push vers le registry privé : :latest + tag de version si HEAD est taggé (vX.Y.Z).
+# Build amd64 + arm64 et push vers le registry privé : :latest + tag de version si HEAD est taggé (vX.Y.Z).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -13,4 +13,4 @@ else
   echo "==> HEAD non taggé : push de :latest uniquement"
 fi
 
-docker buildx build --platform linux/amd64 "${TAGS[@]}" --push .
+docker buildx build --platform linux/amd64,linux/arm64 "${TAGS[@]}" --push .

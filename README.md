@@ -10,7 +10,7 @@ Pas de CI GitHub. Tout se fait en local avec Docker :
 
 ```bash
 scripts/test.sh     # hadolint + build amd64 + syntaxe/import Python
-scripts/release.sh  # build amd64 + push registry.bldwebagency.fr/docker-honeypot-ssh:latest (+ tag de version si HEAD est taggé vX.Y.Z)
+scripts/release.sh  # build amd64+arm64 + push registry.bldwebagency.fr/docker-honeypot-ssh:latest (+ tag de version si HEAD est taggé vX.Y.Z)
 ```
 
 Nécessite `docker login registry.bldwebagency.fr`.
